@@ -2,7 +2,7 @@ import sys
 
 from PyQt5 import uic  # Импортируем uic
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QPainter, QPen
+from PyQt5.QtGui import QPainter, QPen, QColor
 from PyQt5.QtCore import Qt
 from random import randint
 
@@ -12,10 +12,18 @@ SCREEN_SIZE = [400, 400]
 class MyWidget(QMainWindow):
     def __init__(self):
         super().__init__()
-        uic.loadUi('UI.ui', self)  # Загружаем дизайн
+        self.initUI()
         self.pushButton.clicked.connect(self.run)
         self.do_it = False
+        color = []
         # Обратите внимание: имя элемента такое же как в QTDesigner
+
+    def initUI(self):
+        self.setGeometry(150, 150, *SCREEN_SIZE)
+        self.setWindowTitle('Рисуем чудо')
+        self.pushButton = QPushButton(self)
+        self.pushButton.move(10, 10)
+        self.pushButton.setText('Кнопка')
 
     def run(self):
         self.do_it = True
@@ -29,9 +37,10 @@ class MyWidget(QMainWindow):
             qp.end()
 
     def draw_squares(self, qp):
-        pen = QPen(Qt.yellow, 2)
-        qp.setPen(pen)
+
         for i in range(5):
+            pen = QPen(QColor(randint(0, 255), randint(0, 255), randint(0, 255)), 2)
+            qp.setPen(pen)
             r = randint(10, 100)
             x = randint(r, SCREEN_SIZE[0] - r)
             y = randint(r, SCREEN_SIZE[1] - r)
